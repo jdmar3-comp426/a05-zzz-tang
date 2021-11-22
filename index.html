@@ -5,9 +5,13 @@
 <head>
   <title>Newsletter</title>
   <style>
-    h1, p {
+    * {
       font-family: monospace;
       text-align: center;
+    }
+    label, input {
+      display: block;
+      margin: auto;
     }
   </style>
   <meta charset="UTF-8">
@@ -15,10 +19,17 @@
 </head>
 
 <body>
-  <h1>Newsletter</h1>
-  <div class="information">
-    <p>Sign up for a newsletter</p>
-  </div>
+  <h1>Create account</h1>
+  <p>Create an account here</p>
+  <form id="signup">
+    <label for="user">Username:</label>
+    <input id="user" name="user" value="">
+    <label for="email">Email:</label>
+    <input id="email" name="email" value="person@domain.com">
+    <label for="password">Password:</label>
+    <input type="password" id="pass" name="pass" value="">
+    <input type="submit" value="Submit">
+  </form>
 </body>
 
 </html>
