@@ -8,9 +8,15 @@ var db = require("./database.js");
 // Require md5 MODULE
 var md5 = require("md5");
 
+// Require CORS module
+const cors = require("cors");
+
 // Make Express use its own built-in body parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Make Express use CORS
+app.use(cors());
 
 // Set server port
 var HTTP_PORT = 5000;
@@ -28,8 +34,8 @@ app.get("/app/", (req, res, next) => {
 // Define other CRUD API endpoints using express.js and better-sqlite3
 // CREATE a new user (HTTP method POST) at endpoint /app/new/
 app.post("/app/new", (req, res) => {
-  const stmt = db.prepare("INSERT INTO userinfo (user, pass) VALUES (?, ?)");
-  const info = stmt.run(req.body.user, md5(req.body.pass));
+  const stmt = db.prepare("INSERT INTO userinfo (user, email, pass) VALUES (?, ?, ?)");
+  const info = stmt.run(req.body.user, req.body.email, md5(req.body.pass));
   res.status(201).json({"message" : info.changes + " record created: ID " + info.lastInsertRowid + " (201)"});
 });
 
@@ -48,8 +54,8 @@ app.get("/app/user/:id", (req, res) => {
 
 // UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
 app.patch("/app/update/user/:id", (req, res) => {
-  const stmt = db.prepare("UPDATE userinfo SET user = COALESCE(?,user), pass = COALESCE(?,pass) WHERE id = ?");
-  const info = stmt.run(req.body.user, md5(req.body.pass), req.params.id);
+  const stmt = db.prepare("UPDATE userinfo SET user = COALESCE(?,user), email = COALESCE(?,email), pass = COALESCE(?,pass) WHERE id = ?");
+  const info = stmt.run(req.body.user, req.body.email, md5(req.body.pass), req.params.id);
   res.status(200).json({"message" : info.changes + " record updated: ID " + req.params.id + " (200)"});
 });
 
